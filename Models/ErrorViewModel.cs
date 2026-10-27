@@ -1,3 +1,4 @@
+
 namespace InvoicePro.Models;
 
 public class ErrorViewModel
