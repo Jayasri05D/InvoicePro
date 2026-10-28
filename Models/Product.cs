@@ -21,3 +21,5 @@ public class Product
     public ICollection<InvoiceLine> InvoiceLines { get; set; }
         = new List<InvoiceLine>();
 }
+
+

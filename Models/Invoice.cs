@@ -1,13 +1,18 @@
 using System.ComponentModel.DataAnnotations;
-
+using Microsoft.AspNetCore.Mvc;
 namespace InvoicePro.Models;
 
-public class Invoice
+public class Invoice: IValidatableObject
 {
     public int InvoiceId { get; set; }
 
     [Required]
     [StringLength(30)]
+    [Remote(
+    action: "VerifyInvoiceNumber",
+    controller: "Invoices",
+    AdditionalFields = nameof(InvoiceId),
+    ErrorMessage = "This invoice number already exists.")]
     public string InvoiceNumber { get; set; } = string.Empty;
 
     [Required]
@@ -33,4 +38,16 @@ public class Invoice
 
     public ICollection<Payment> Payments { get; set; }
         = new List<Payment>();
+        
+public IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
+{
+    if (DueDate.Date < InvoiceDate.Date)
+    {
+        yield return new ValidationResult(
+            "Due date cannot be earlier than invoice date.",
+            new[] { nameof(DueDate) });
+    }
+}
+
 }

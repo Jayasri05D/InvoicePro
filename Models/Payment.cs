@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-
+using InvoicePro.Validation;
 namespace InvoicePro.Models;
 
 public class Payment
@@ -14,6 +14,7 @@ public class Payment
     [Range(typeof(decimal), "0.01", "999999999")]
     public decimal Amount { get; set; }
 
+[NotFutureDate]
     public DateTime PaymentDate { get; set; } = DateTime.Today;
 
     [Required]

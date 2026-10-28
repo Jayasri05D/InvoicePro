@@ -1,0 +1,53 @@
+
+@model IEnumerable<InvoicePro.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1>Products</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add Product</a>
+</p>
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert alert-success">@success</div>
+}
+
+@if (TempData["Error"] is string error)
+{
+    <div class="alert alert-danger">@error</div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Unit Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>@product.UnitPrice.ToString("C")</td>
+                <td>@(product.IsActive ? "Active" : "Inactive")</td>
+                <td>
+                    <a asp-action="Details"
+                       asp-route-id="@product.ProductId">Details</a> |
+                    <a asp-action="Edit"
+                       asp-route-id="@product.ProductId">Edit</a> |
+                    <a asp-action="Delete"
+                       asp-route-id="@product.ProductId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,55 @@
+
+@model IEnumerable<InvoicePro.Models.Invoice>
+
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Invoice Number</th>
+                    <th>Customer</th>
+                    <th>Invoice Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th class="text-end">Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var invoice in Model)
+                {
+                    <tr>
+                        <td>@invoice.InvoiceNumber</td>
+                        <td>@invoice.Customer.Name</td>
+                        <td>@invoice.InvoiceDate.ToString("dd MMM yyyy")</td>
+                        <td>@invoice.DueDate.ToString("dd MMM yyyy")</td>
+                        <td>
+                            <span class="badge bg-secondary">
+                                @invoice.Status
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            @invoice.TotalAmount.ToString("C2",
+                                System.Globalization.CultureInfo.GetCultureInfo("en-IN"))
+                        </td>
+                        <td>
+                            <a asp-action="Details"
+                               asp-route-id="@invoice.InvoiceId"
+                               class="btn btn-sm btn-outline-primary">
+                                Details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="text-center py-5">
+        <h5>No invoices found</h5>
+        <p class="text-muted">Try a different invoice number or customer name.</p>
+    </div>
+}

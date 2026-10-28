@@ -1,0 +1,71 @@
+
+@model IEnumerable<InvoicePro.Models.Payment>
+
+@{
+    ViewData["Title"] = "Payments";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Payments</h2>
+            <p class="text-muted">Track invoice payments and references.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            + Record Payment
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Invoice</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Method</th>
+                                <th>Reference</th>
+                                <th class="text-end">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var payment in Model)
+                            {
+                                <tr>
+                                    <td>@payment.Invoice.InvoiceNumber</td>
+                                    <td>@payment.Invoice.Customer.Name</td>
+                                    <td>@payment.PaymentDate.ToString("dd MMM yyyy")</td>
+                                    <td>@payment.Method</td>
+                                    <td>@(payment.ReferenceNumber ?? "—")</td>
+                                    <td class="text-end fw-semibold">
+                                        @payment.Amount.ToString("C2",
+                                            System.Globalization.CultureInfo.GetCultureInfo("en-IN"))
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <h5>No payments recorded yet</h5>
+                    <p class="text-muted">Record your first invoice payment.</p>
+                    <a asp-action="Create" class="btn btn-primary">
+                        Record Payment
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
